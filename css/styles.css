@@ -1,6 +1,55 @@
 div {
-
   text-align: center;
 }
-html, body { height: 100%; margin: 0; padding: 0; }
-#map { height: 100%; }
+html, body { height: 100%; margin: 0; padding: 0; color: silver; background-color: dimgray;}
+
+#map {
+  height: 54%;
+  box-shadow: 3px 6px 9px darkgrey;
+  left: 0;
+  }
+
+a {
+  font-size: 66%;
+}
+a:link {
+    text-decoration: none;
+    color: lightblue;
+}
+
+a:visited {
+    text-decoration: none;
+    color: dimgray;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: silver;
+}
+
+a:active {
+    text-decoration: underline;
+    color: white;
+}
+p {
+  font-size: 18px;
+  margin: 0;
+  color: silver;
+}
+.title-item {
+  text-transform: uppercase;
+}
+.search {
+  margin: 3% 27% 3% 27%;
+  padding: 0 0 0 9%;
+}
+.list-item {
+  text-align: center;
+  border: 3px solid darkgrey;
+  margin: 1% 27% 1% 27%;
+  padding: 1% 0 1% 0;
+  background-color: #222;
+}
+.list-view {
+  height: 33%;
+}

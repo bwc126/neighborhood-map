@@ -7,15 +7,35 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
   </head>
   <body>
-    <div class="input">search input area</div>
+    <!-- Here's where the map will go  -->
     <div id="map">map</div>
-    <div class="list-view">list view area</div>
+    <!-- Map marker filter input area -->
+    <form class="search" data-bind="submit: results">
+      <input data-bind="textInput: filter" />
+      <button type="submit">Filter Points</button>
+    </form>
+    <!--The list of filtered map markers, all present by default on page load -->
     <div class="list-view">
-    The name is <span data-bind="text: personName"></span>
+      <div class="title-item"> Points of Interest</div>
+        <!-- ko foreach: points -->
+        <div>
+          <div class="list-item" data-bind="event: { mouseover: $parent.toggle(pin) }">
+            <div data-bind="event: { mouseout: $parent.kill(pin) }">
+              <div data-bind="event: {click: $parent.info(pin)}">
+                <p data-bind="text: name"></p>
+                <a data-bind="attr: {id: 'wiki-url-'+name.replace(/ /g,'_')}">Link</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
     </div>
+
   </body>
   <script src="js/vendor/jQuery.js"></script>
   <script src="js/vendor/knockout-3.4.0.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/view.js"></script>
+  <script src="js/model.js"></script>
+  <script src="js/viewModel.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALhvpFcZhE5V5z3EY4eZAzx4s3LVbQSH8&callback=googMap" async defer></script>
 </html>
