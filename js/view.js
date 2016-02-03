@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 // our Map should be a global object
 var laMapa;
 // Creating the map and placing markers on it is initiated by a callback passed
@@ -10,10 +10,9 @@ function googMap() {
     zoom: 9
   });
   // Cycle through the points in our model and add a map marker for each
-  viewModel.points().forEach(function(point){
+  viewModel.points().forEach(function(point) {
     setTimeout(function() {
       point.pin = new pin(point.name, point.lat, point.long, point.snippet);
     }, 200*viewModel.points.indexOf(point));
   });
-
 };

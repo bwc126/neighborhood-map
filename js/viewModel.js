@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // viewModel variable handles data for the app and bindings
 var viewModel = {
@@ -128,10 +128,10 @@ var viewModel = {
   }
 };
 // Apply the bindings specified within the viewModel
-$(function(){
+$(function() {
   ko.applyBindings(viewModel);
 });
-// Instantiate some obersvables with model data. 
+// Instantiate some obersvables with model data.
 viewModel.points(focusPoints);
 viewModel.invisibles([]);
 viewModel.points.sort(function(prev,next) {

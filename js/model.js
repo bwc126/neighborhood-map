@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 // Constructor for the pin attached to each point
-var pin = function(name, lat, long, wikiContent) {
+var pin = function (name, lat, long, wikiContent) {
   // Call google maps to create the map marker for this spot
   this.marker = new google.maps.Marker({
     position: {lat: lat, lng: long},
