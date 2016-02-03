@@ -32,10 +32,13 @@
     </div>
 
   </body>
+  <!-- Put scripts after the body to increase first render rate -->
   <script src="js/vendor/jQuery.js"></script>
   <script src="js/vendor/knockout-3.4.0.js"></script>
   <script src="js/view.js"></script>
   <script src="js/model.js"></script>
   <script src="js/viewModel.js"></script>
+  <!-- Google maps api call, with callback to googMap to create the map instance and 
+  markers.  -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALhvpFcZhE5V5z3EY4eZAzx4s3LVbQSH8&callback=googMap" async defer></script>
 </html>

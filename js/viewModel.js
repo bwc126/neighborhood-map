@@ -2,31 +2,40 @@
 
 // viewModel variable handles data for the app and bindings
 var viewModel = {
-  // list filtering, visibility, icon alt text, icon img
+  // points will hold the list of points of interest
   points: ko.observableArray(),
+  // invisibles will hold the list of items which are excluded by the active filter
   invisibles: ko.observableArray(),
-  // remove points
+  // filter is the filter input term provided by the user
   filter: ko.observable(),
-  // center to point
+  // results handles the actual filtering process
   results: function() {
+    // If no filter has yet been entered...
     if (!this.filter()) {
+      // Make sure every invisible point becomes visible, by putting it back on our
+      // regular "points" array
       this.invisibles().forEach(function(point) {
         viewModel.points.push(point);
         point.pin.marker.setMap(laMapa);
         point.pin.infoWindow.close();
       })
+      // Keep the list sorted for a sense of continuity between view changes
       this.points.sort(function(prev,next) {
         return prev.name.toLowerCase() == next.name.toLowerCase() ? 0 : (prev.name.toLowerCase() < next.name.toLowerCase() ? -1 : 1);
       });
+      // Since there's no filter, no point should be invisible
       this.invisibles([]);
     }
+    // A filter has been provided
     else {
+      // Look at invisible points to see if any match our filter term
       this.invisibles().forEach(function(point) {
         if (point.name.toLowerCase().indexOf(viewModel.filter().toLowerCase())>-1) {
           viewModel.points.push(point);
           point.pin.marker.setMap(laMapa);
         }
       });
+      // Remove any visible points which don't match our filter term
       this.points().forEach(function(point) {
         viewModel.invisibles.push(point);
         point.pin.marker.setMap(null);
@@ -35,31 +44,41 @@ var viewModel = {
           point.pin.marker.setMap(laMapa);
         }
       });
+      // Keep it sorted for a sense of user continuity
       this.points.sort(function(prev,next) {
           return prev.name.toLowerCase() == next.name.toLowerCase() ? 0 : (prev.name.toLowerCase() < next.name.toLowerCase() ? -1 : 1);
       });
+      // If anything's left in the invisible list, it shouldn't be in our list of
+      // visible points aka "points"
       this.invisibles().forEach(function(point) {
         viewModel.points.remove(point);
 
       });
     }
+    // Make sure we always have our wikipedia links after changing the view
     this.addLinks();
   },
+  // toggle will get togPin bouncing
   toggle: function(togPin) {
     if (togPin.marker !== undefined) {
       togPin.Bounce();
     }
   },
+  // kill will make sure togPin isn't bouncing
   kill: function(togPin) {
     if (togPin.marker !== undefined) {
       togPin.noBounce();
     }
   },
+  // info will open any infowindow associated with togPin
   info: function(togPin) {
     if (togPin.marker !== undefined) {
       togPin.openInfo();
     }
   },
+  // getLinks will call wikipedia's api and upon success append an article
+  // snippet and url to its corresponding item in points. This doesn't
+  // handle changing the view, that's for...
   getLinks: function() {
     var msg = "No Relevant Wikipedia Article Found";
     this.points().forEach(function(point) {
@@ -92,6 +111,8 @@ var viewModel = {
       });
     })
   },
+  // addLinks, which actually modifies the view with any wiki information found
+  // for the corresponding point in the "points" observableArray
   addLinks: function(optPoint) {
     if (optPoint === undefined) {
       this.points().forEach(function(point) {
@@ -106,10 +127,11 @@ var viewModel = {
     }
   }
 };
-
+// Apply the bindings specified within the viewModel
 $(function(){
   ko.applyBindings(viewModel);
 });
+// Instantiate some obersvables with model data. 
 viewModel.points(focusPoints);
 viewModel.invisibles([]);
 viewModel.points.sort(function(prev,next) {

@@ -1,8 +1,10 @@
 "use strict";
-// Map class
+// our Map should be a global object
 var laMapa;
+// Creating the map and placing markers on it is initiated by a callback passed
+// to the google maps api, which is done in its own html script tag in index.html
 function googMap() {
-  //call google maps and create a map here
+  // Now that google exists (thanks to its api response) we can create a new map
   laMapa = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 39.04, lng: -77.51},
     zoom: 9

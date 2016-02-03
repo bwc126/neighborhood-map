@@ -2,13 +2,10 @@ div {
   text-align: center;
 }
 html, body { height: 100%; margin: 0; padding: 0; color: silver; background-color: dimgray;}
-
 #map {
   height: 54%;
   box-shadow: 3px 6px 9px darkgrey;
-  left: 0;
   }
-
 a {
   font-size: 66%;
 }

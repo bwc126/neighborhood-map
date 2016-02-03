@@ -1,5 +1,5 @@
 "use strict";
-
+// Constructor for the pin attached to each point
 var pin = function(name, lat, long, wikiContent) {
   // Call google maps to create the map marker for this spot
   this.marker = new google.maps.Marker({
@@ -19,6 +19,7 @@ var pin = function(name, lat, long, wikiContent) {
     win.open(laMapa, this);
   });
 }
+// Toggle the bouncing animation for the marker
 pin.prototype.toggleBounce = function() {
   if (this.getAnimation() !== null) {
     this.setAnimation(null);
@@ -26,19 +27,23 @@ pin.prototype.toggleBounce = function() {
     this.setAnimation(google.maps.Animation.BOUNCE);
   }
 }
+// Set the marker's animation to bounce
 pin.prototype.Bounce = function() {
     this.marker.setAnimation(google.maps.Animation.BOUNCE);
 }
+// Stop the marker from bouncing
 pin.prototype.noBounce = function() {
   this.marker.setAnimation(null);
 }
+// Set which map the marker is on to the one passed in
 pin.prototype.setMap = function(map) {
   this.marker.map = map;
 }
+// Open the marker's infowindow
 pin.prototype.openInfo = function() {
   this.infoWindow.open(laMapa, this.marker);
 }
-
+// Create an array to hold points of interest
 var focusPoints = [
     {name: "Colvin Run Mill",
     lat: 38.968,
