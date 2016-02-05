@@ -8,10 +8,10 @@
   </head>
   <body>
     <!-- Here's where the map will go  -->
-    <div id="map">map</div>
+    <div id="map" class="map">map</div>
     <!-- Map marker filter input area -->
     <form class="search" data-bind="submit: results">
-      <input data-bind="textInput: filter" />
+      <input placeholder="Filter Points" data-bind="textInput: filter" />
       <button type="submit">Filter Points</button>
     </form>
     <!--The list of filtered map markers, all present by default on page load -->
@@ -23,7 +23,7 @@
             <div data-bind="event: { mouseout: $parent.kill(pin) }">
               <div data-bind="event: {click: $parent.info(pin)}">
                 <p data-bind="text: name"></p>
-                <a data-bind="attr: {id: 'wiki-url-'+name.replace(/ /g,'_')}">Link</a>
+                <a data-bind="attr: {href: wikiURL}, text: wikiURL">Link</a>
               </div>
             </div>
           </div>
@@ -38,7 +38,7 @@
   <script src="js/view.js"></script>
   <script src="js/model.js"></script>
   <script src="js/viewModel.js"></script>
-  <!-- Google maps api call, with callback to googMap to create the map instance and 
+  <!-- Google maps api call, with callback to googMap to create the map instance and
   markers.  -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALhvpFcZhE5V5z3EY4eZAzx4s3LVbQSH8&callback=googMap" async defer></script>
 </html>

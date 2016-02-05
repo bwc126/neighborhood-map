@@ -8,6 +8,8 @@ var viewModel = {
   invisibles: ko.observableArray(),
   // filter is the filter input term provided by the user
   filter: ko.observable(),
+
+  links: ko.observableArray(),
   // results handles the actual filtering process
   results: function() {
     // If no filter has yet been entered...
@@ -16,7 +18,7 @@ var viewModel = {
       // regular "points" array
       this.invisibles().forEach(function(point) {
         viewModel.points.push(point);
-        point.pin.marker.setMap(laMapa);
+        point.pin.marker.setMap(elMapa);
         point.pin.infoWindow.close();
       })
       // Keep the list sorted for a sense of continuity between view changes
@@ -32,7 +34,7 @@ var viewModel = {
       this.invisibles().forEach(function(point) {
         if (point.name.toLowerCase().indexOf(viewModel.filter().toLowerCase())>-1) {
           viewModel.points.push(point);
-          point.pin.marker.setMap(laMapa);
+          point.pin.marker.setMap(elMapa);
         }
       });
       // Remove any visible points which don't match our filter term
@@ -41,7 +43,7 @@ var viewModel = {
         point.pin.marker.setMap(null);
         if (point.name.toLowerCase().indexOf(viewModel.filter().toLowerCase())>-1) {
           viewModel.invisibles.remove(point);
-          point.pin.marker.setMap(laMapa);
+          point.pin.marker.setMap(elMapa);
         }
       });
       // Keep it sorted for a sense of user continuity
@@ -56,7 +58,7 @@ var viewModel = {
       });
     }
     // Make sure we always have our wikipedia links after changing the view
-    this.addLinks();
+
   },
   // toggle will get togPin bouncing
   toggle: function(togPin) {
@@ -84,48 +86,32 @@ var viewModel = {
     this.points().forEach(function(point) {
       var search = point.name.replace(/ /g,"_");
       var wikiurl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + search + '&format=json';
+      var wikiTimeout = setTimeout(function() {
+        point.wikiURL = "Failed to Communicate with Wikipedia";
+      }, 8000);
       $.ajax({
         url: wikiurl,
         dataType: "jsonp",
         success: function( response ) {
-          console.log(response);
           var snippetList = response[2];
           var linkList = response[3];
-          point.wikiURL = linkList[0];
+          point.wikiURL(linkList[0]);
           point.snippet = snippetList[0];
-          viewModel.addLinks(point);
           if (point.pin !== undefined) {
             point.pin.infoWindow.content = point.snippet;
-          };
-          if (point.wikiURL == "") {
+          }
+          if (point.wikiURL === 0) {
             point.wikiURL = msg;
-          };
-          if (point.snippet == "") {
+          }
+          if (point.snippet === 0) {
             point.snippet = msg;
-          };
+          }
+          clearTimeout(wikiTimeout);
+
         },
-        fail: function() {
-          point.wikiURL = msg;
-          point.snippet = msg;
-        }
       });
-    })
+    });
   },
-  // addLinks, which actually modifies the view with any wiki information found
-  // for the corresponding point in the "points" observableArray
-  addLinks: function(optPoint) {
-    if (optPoint === undefined) {
-      this.points().forEach(function(point) {
-        $("#wiki-url-"+point.name.replace(/ /g,'_')).attr("href", point.wikiURL);
-        $("#wiki-url-"+point.name.replace(/ /g,'_')).text(point.wikiURL);
-      });
-    }
-    else {
-      console.log("attempting to add link and snippet for " + optPoint.name.replace(/ /g,'_'));
-      $("#wiki-url-"+optPoint.name.replace(/ /g,'_')).attr("href", optPoint.wikiURL);
-      $("#wiki-url-"+optPoint.name.replace(/ /g,'_')).text(optPoint.wikiURL);
-    }
-  }
 };
 // Apply the bindings specified within the viewModel
 $(function() {
@@ -135,6 +121,8 @@ $(function() {
 viewModel.points(focusPoints);
 viewModel.invisibles([]);
 viewModel.points.sort(function(prev,next) {
-  return prev.name.toLowerCase() == next.name.toLowerCase() ? 0 : (prev.name.toLowerCase() < next.name.toLowerCase() ? -1 : 1)
+  return prev.name.toLowerCase() == next.name.toLowerCase() ? 0 : (prev.name.toLowerCase() < next.name.toLowerCase() ? -1 : 1);
 });
+viewModel.links();
 viewModel.getLinks();
+// viewModel.addLinks.extend({notify: 'always'});
