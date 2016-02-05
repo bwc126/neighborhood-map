@@ -16,3 +16,7 @@ function googMap() {
     }, 200*viewModel.points.indexOf(point));
   });
 };
+
+function googOops() {
+  $(".map").text("Google Maps Unresponsive");
+}
