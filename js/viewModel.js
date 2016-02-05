@@ -8,8 +8,6 @@ var viewModel = {
   invisibles: ko.observableArray(),
   // filter is the filter input term provided by the user
   filter: ko.observable(),
-
-  links: ko.observableArray(),
   // results handles the actual filtering process
   results: function() {
     // If no filter has yet been entered...
@@ -57,8 +55,6 @@ var viewModel = {
 
       });
     }
-    // Make sure we always have our wikipedia links after changing the view
-
   },
   // toggle will get togPin bouncing
   toggle: function(togPin) {
@@ -79,8 +75,7 @@ var viewModel = {
     }
   },
   // getLinks will call wikipedia's api and upon success append an article
-  // snippet and url to its corresponding item in points. This doesn't
-  // handle changing the view, that's for...
+  // snippet and url to its corresponding item in points.
   getLinks: function() {
     var msg = "No Relevant Wikipedia Article Found";
     this.points().forEach(function(point) {
@@ -117,12 +112,10 @@ var viewModel = {
 $(function() {
   ko.applyBindings(viewModel);
 });
-// Instantiate some obersvables with model data.
+// Instantiate some observables with model data.
 viewModel.points(focusPoints);
 viewModel.invisibles([]);
 viewModel.points.sort(function(prev,next) {
   return prev.name.toLowerCase() == next.name.toLowerCase() ? 0 : (prev.name.toLowerCase() < next.name.toLowerCase() ? -1 : 1);
 });
-viewModel.links();
 viewModel.getLinks();
-// viewModel.addLinks.extend({notify: 'always'});

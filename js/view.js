@@ -15,8 +15,8 @@ function googMap() {
       point.pin = new pin(point.name, point.lat, point.long, point.snippet);
     }, 200*viewModel.points.indexOf(point));
   });
-};
-
+}
+// Handle errors from the google map
 function googOops() {
   $(".map").text("Google Maps Unresponsive");
 }
